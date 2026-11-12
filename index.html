@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Estoque da loja</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@400;600;800&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="style.css">
+  </head>
+  <body>
+    <main id="authbox" style="max-width: 420px">
+  <h1>Estoque da loja</h1>
+  <nav class="atabs">
+    <button type="button" id="atab-entrar" class="atab on">Entrar</button>
+    <button type="button" id="atab-cadastro" class="atab">Cadastro</button>
+  </nav>
+
+  <section id="painel-entrar">
+    <p class="sub">Entre para ver e salvar o estoque.</p>
+    <form id="af">
+      <label style="flex: 1 1 100%">E-mail<input id="em" type="email" required autocomplete="email"></label>
+      <label style="flex: 1 1 100%">Senha<input id="pw" type="password" required minlength="6" autocomplete="current-password"></label>
+      <button type="submit">Entrar</button>
+    </form>
+    <p class="meta" id="amsg" role="status"></p>
+  </section>
+
+  <section id="painel-cadastro" hidden>
+    <p class="sub">Crie seu cadastro com e-mail e senha.</p>
+    <form id="rf">
+      <label style="flex: 1 1 100%">E-mail<input id="rem" type="email" required autocomplete="email"></label>
+      <label style="flex: 1 1 100%">Nome Da Loja<input id="rloja" type="text" required></label>
+      <label style="flex: 1 1 100%">Senha (mínimo 6 caracteres)<input id="rpw" type="password" required minlength="6" autocomplete="new-password"></label>
+      <label style="flex: 1 1 100%">Repita a senha<input id="rpw2" type="password" required minlength="6" autocomplete="new-password"></label>
+      <button type="submit">Criar cadastro</button>
+    </form>
+    <p class="meta" id="rmsg" role="status"></p>
+  </section>
+</main>
+    <main id="app" hidden>
+      <div
+        class="row"
+        style="justify-content: space-between; align-items: center"
+      >
+        <h1 id="titulo">Estoque da loja</h1>
+        <button class="ghost" id="out">Sair</button>
+      </div>
+      <p class="sub">
+        Cadastre as peças, registre vendas e veja o que repor e o que está
+        encalhado.
+      </p>
+
+      <div class="stats" id="stats"></div>
+
+      <section>
+        <h2>Cadastrar produto</h2>
+        <form id="f">
+          <label style="flex: 2 1 200px"
+            >Nome<input
+              id="name"
+              required
+              placeholder="Ex.: Camiseta básica algodão"
+          /></label>
+          <label style="flex: 1 1 180px"
+            >Foto<input id="photo" type="file" accept="image/*" /></label
+          ><label>Código<input id="sku" placeholder="Opcional" /></label>
+          <label>Categoria<select id="cat"></select></label>
+          <label>Tamanho<input id="size" placeholder="P, M, 42..." /></label>
+          <label>Cor<input id="color" placeholder="Preto" /></label>
+          <label
+            >Qtd.<input id="qty" type="number" min="0" value="1" required
+          /></label>
+          <label
+            >Custo (R$)<input
+              id="cost"
+              type="number"
+              min="0"
+              step="0.01"
+              required
+          /></label>
+          <label
+            >Preço (R$)<input
+              id="price"
+              type="number"
+              min="0"
+              step="0.01"
+              required
+          /></label>
+          <label
+            >Estoque mín.<input id="min" type="number" min="0" value="2"
+          /></label>
+          <button type="submit" id="save">Salvar produto</button>
+
+          <button type="button" class="ghost" id="cancel" hidden>Cancelar edição</button>
+        </form>
+        <p class="meta" id="msg" role="status"></p>
+      </section>
+
+      <section>
+        <h2>Repor estoque</h2>
+        <p class="meta">
+          Entra aqui o que está no mínimo ou não dura 30 dias no ritmo atual de
+          vendas. A sugestão cobre cerca de 2 meses de venda.
+        </p>
+        <div class="list" id="rep"></div>
+      </section>
+
+      <section>
+        <h2>Encalhados</h2>
+        <div class="row">
+          <label style="flex: 0 1 200px"
+            >Sem vender há (dias)<input
+              id="days"
+              type="number"
+              min="1"
+              value="45"
+          /></label>
+        </div>
+        <div class="list" id="idle"></div>
+      </section>
+
+      <section>
+        <h2>Mais vendidos (30 dias)</h2>
+        <div class="list" id="top"></div>
+      </section>
+
+      <section>
+        <h2>Produtos</h2>
+        <div class="row">
+          <label style="flex: 2 1 200px"
+            >Buscar<input id="s" placeholder="Nome, código, cor ou tamanho"
+          /></label>
+          <label>Categoria<select id="fcat"></select></label>
+        </div>
+        <div class="over">
+          <table>
+            <thead>
+              <tr>
+                <th>Foto</th>
+                <th>Produto</th>
+                <th>Preço</th>
+                <th>No estoque</th>
+                <th>Vendidas</th>
+                <th>Valor em estoque</th>
+                <th>Total vendido</th>
+                <th>Ações</th>
+              </tr>
+            </thead>
+            <tbody id="tb"></tbody>
+          </table>
+        </div>
+        <div class="empty" id="none"></div>
+        <input type="file" id="pickph" accept="image/*" hidden />
+      </section> 
+
+      <section>
+<h2>Zerar vendas</h2>
+<p class="meta">Apaga todo o histórico de vendas (peças vendidas, total vendido e lucro). O estoque dos produtos não muda. Não dá para desfazer.</p>
+<button class="ghost" id="zerar">Zerar vendas</button>
+<p class="meta" id="zmsg" role="status"></p>
+</section>
+    </main>
+    <script type="module" src="main.js"></script>
+  </body>
+</html>
